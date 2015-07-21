@@ -1,18 +1,35 @@
 class Exercise
-
-  # Assume that "str" is a sequence of words separated by spaces.
-  # Return a string in which every word in "str" that exceeds 4 characters is replaced with "marklar".
-  # If the word being replaced has a capital first letter, it should instead be replaced with "Marklar".
+  # thorough marklarization protocol
   def self.marklar(str)
-    # TODO: Implement this method
+    words = str.split(' ');
+    words.each_with_index do |word, index| 
+      if word.length > 4 
+        marklar_variant = "marklar"
+        # preserve punctuation/capitalization, eliminate pesky hyphens!
+        punctuation = word.gsub(/\w/, '')
+        punctuation.gsub!(/[-]/, '')
+        marklar_variant.capitalize! if word[0] == word[0].upcase
+        marklar_variant += punctuation unless punctuation.nil?
+        words[index] = marklar_variant
+      end
+    end
+    words.join(' ');
   end
 
-  # Return the sum of all even numbers in the Fibonacci sequence, up to
-  # the "nth" term in the sequence
-  # eg. the Fibonacci sequence up to 6 terms is (1, 1, 2, 3, 5, 8),
-  # and the sum of its even numbers is (2 + 8) = 10
+  # for each even number 1..nth, find that fib value, add to an array and sum.
   def self.even_fibonacci(nth)
-    # TODO: Implement this method
+    even_fibs = []
+    nth.times do |t|
+      # still exponential time, but every lil bit counts!
+      next unless t % 3 == 0
+      even_fibs << fibonacci_helper(t)
+    end
+    even_fibs.inject(:+)
   end
 
+  # Handles the recursion, finds the nth fibonacci number
+  def self.fibonacci_helper(n)
+    return n if (0..1).include? n
+    fibonacci_helper(n - 1) + fibonacci_helper(n - 2)
+  end
 end
